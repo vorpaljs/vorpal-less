@@ -1,0 +1,64 @@
+{
+  "name": "vorpal-less",
+  "version": "0.0.1",
+  "description": "Less implementation for Vorpal.js",
+  "main": "./dist/less.js",
+  "scripts": {
+    "test": "mocha && xo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vorpaljs/vorpal-less.git"
+  },
+  "keywords": [
+    "less",
+    "api",
+    "cli",
+    "immersive",
+    "repl",
+    "vorpal",
+    "vorpaljs",
+    "posix"
+  ],
+  "author": "dthree",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vorpaljs/vorpal-less/issues"
+  },
+  "homepage": "https://github.com/vorpaljs/vorpal-less#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
+    "gulp-changed": "^1.3.0",
+    "mocha": "^2.3.3",
+    "should": "^7.1.0",
+    "vorpal": "^1.1.8",
+    "vorpal-hacker-news": "^1.0.6",
+    "xo": "^0.9.0"
+  },
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "slice-ansi": "0.0.3",
+    "vorpal": "^1.1.9"
+  },
+  "engines": {
+    "node": ">= 0.11.16",
+    "iojs": ">= 1.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "xo": {
+    "envs": [
+      "node",
+      "mocha"
+    ],
+    "esnext": true,
+    "space": true,
+    "rules": {
+      "no-unused-expressions": 0,
+      "prefer-arrow-callback": 0,
+      "prefer-reflect": 0
+    }
+  }
+}

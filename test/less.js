@@ -7,9 +7,9 @@ var less = require('./../dist/less');
 var vorpal = require('vorpal')();
 
 vorpal.command('blabber').action(function (args, cb) {
-  let blabber = '';
-  for (let i = 0; i < 300; ++i) {
-    for (let j = 0; j < 80; ++j) {
+  var blabber = '';
+  for (var i = 0; i < 300; ++i) {
+    for (var j = 0; j < 80; ++j) {
       blabber += Math.floor(Math.random() * 100);
     }
     blabber += '\n';
@@ -31,8 +31,8 @@ describe('vorpal-less', function () {
   });
 
   it('should exist as a command in Vorpal', function () {
-    let exists = false;
-    for (let i = 0; i < vorpal.commands.length; ++i) {
+    var exists = false;
+    for (var i = 0; i < vorpal.commands.length; ++i) {
       if (vorpal.commands[i]._name === 'less') {
         exists = true;
       }

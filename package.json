@@ -38,8 +38,7 @@
   },
   "dependencies": {
     "chalk": "^1.1.1",
-    "slice-ansi": "0.0.3",
-    "vorpal": "^1.1.9"
+    "slice-ansi": "0.0.3"
   },
   "engines": {
     "node": ">= 0.11.16",

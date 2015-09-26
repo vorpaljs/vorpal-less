@@ -2,9 +2,9 @@
 
 require('assert');
 
-const should = require('should');
-const less = require('./../dist/less');
-const vorpal = require('vorpal')();
+var should = require('should');
+var less = require('./../dist/less');
+var vorpal = require('vorpal')();
 
 vorpal.command('blabber').action(function (args, cb) {
   let blabber = '';

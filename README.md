@@ -17,23 +17,19 @@ npm install vorpal
 ### Getting Started
 
 ```js
-// index.js
-const Vorpal = require('vorpal');
+const vorpal = require('vorpal')();
 const hn = require('vorpal-hacker-news');
 const less = require('vorpal-less');
-
-const vorpal = Vorpal();
 
 vorpal
   .delimiter('node~$')
   .use(hn)
   .use(less)
   .show();
-
 ```
 
 ```bash
-$ node myapp.js
+$ node hacker-news.js
 node~$ hacker-news | less
 ...
 ... content
@@ -43,8 +39,8 @@ node~$ hacker-news | less
 
 ### Examples
 
-- [Hackers News](https://github.com/vorpaljs/vorpal-less/blobl/master/examples/hacker-news.js)
-- [Rock Paper Scissors](https://github.com/vorpaljs/vorpal-less/blobl/master/examples/rock-paper-scissors.js)
+- [Hackers News](https://github.com/vorpaljs/vorpal-less/blob/master/examples/hacker-news.js)
+- [Rock Paper Scissors](https://github.com/vorpaljs/vorpal-less/blob/master/examples/rock-paper-scissors.js)
 
 ### Implementation
 
@@ -69,5 +65,5 @@ Feel free to contribute! Additional work is needed on:
 
 ### License
 
-MIT
+MIT © [David Caccavella](https://githbu.com/dthree)
 

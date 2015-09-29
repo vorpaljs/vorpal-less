@@ -1,28 +1,11 @@
 const chalk = require('chalk');
 
-function b(str) {
-  return chalk.blue(str);
-}
-
-function y(str) {
-  return chalk.yellow(str);
-}
-
-function r(str) {
-  return chalk.red(str);
-}
-
-function c(str) {
-  return chalk.cyan(str);
-}
-
-function g(str) {
-  return chalk.grey(str);
-}
-
-function bold(str) {
-  return chalk.bold(str);
-}
+const b = chalk.blue;
+const y = chalk.yellow;
+const r = chalk.red;
+const c = chalk.cyan;
+const g = chalk.grey;
+const bold = chalk.bold;
 
 const help =
 `

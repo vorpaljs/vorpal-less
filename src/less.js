@@ -40,6 +40,7 @@ const less = {
     callback = callback || function () {};
     this.instance = instance;
     this.vorpal = vorpal;
+    this.hasQuit = false;
     this.callback = callback;
     this.cursorY = 0;
     this.cursorX = 0;
@@ -48,10 +49,11 @@ const less = {
     this.stdin = '';
     this.cache = '';
     this.numbers = '';
+    this.prompted = false;
     this.help = help;
     this.onlyHelp = (args.options.help);
     this.helpMode = (args.options.help);
-    this.prompt();
+    this.quitIfOneScreen = (args.options.quitifonescreen);
     const self = this;
     this.keypressFn = function (e) {
       self.onKeypress(e);
@@ -63,25 +65,41 @@ const less = {
   exec(args) {
     const stdin = args.stdin || '';
     this.stdin += `${stdin}\n`;
-    this.render();
+    const content = this.prepare();
+    if (this.hasQuit) {
+      return;
+    }
+    if (!this.prompted) {
+      this.prompt();
+    }
+    this.render(content);
   },
 
-  render(append) {
-    let stdin = (this.helpMode) ? this.help : String(this.stdin);
+  prepare() {
+    const self = this;
+    let stdins = (this.helpMode) ? this.help : String(this.stdin);
     const cursorY = (this.helpMode) ? this.helpCursorY : this.cursorY;
     const cursorX = (this.helpMode) ? this.helpCursorX : this.cursorX;
-    const lines = stdin.split('\n').length;
+    const lines = stdins.split('\n').length;
     const height = process.stdout.rows - 1;
     const diff = height - lines;
-    if (diff > 0) {
-      stdin = utili.padRows(stdin, diff);
+    if (diff > 0 && !this.quitIfOneScreen) {
+      stdins = utili.padRows(stdins, diff);
     }
-    stdin = stdin.split('\n').slice(cursorY, cursorY + height).map(function (str) {
+    stdins = stdins.split('\n').slice(cursorY, cursorY + height).map(function (str) {
       str = slice(str, cursorX, cursorX + process.stdout.columns - 1);
       return str;
     }).join('\n');
-    stdin = stdin;
-    this.vorpal.ui.rewrite(stdin + (append || ''));
+    if (this.quitIfOneScreen && diff > 0) {
+      self.vorpal.log(stdins);
+      this.quit();
+      return undefined;
+    }
+    return stdins;
+  },
+
+  render(data) {
+    this.vorpal.ui.rewrite(data);
   },
 
   onKeypress(keypress) {
@@ -181,27 +199,54 @@ const less = {
     }
 
     // Draw.
-    this.vorpal.ui.delimiter(delimiter);
     this[cursorYName] = cursorY;
     this[cursorXName] = cursorX;
-    this.render();
-    if (cursorY < bottom && !this.helpMode) {
-      this.vorpal.ui.write(this.cache);
-    } else {
-      this.vorpal.ui.write('');
+
+    const content = this.prepare();
+    if (!this.hasQuit) {
+      this.vorpal.ui.delimiter(delimiter);
+      this.render(content);
+      if (cursorY < bottom && !this.helpMode) {
+        this.vorpal.ui.write(this.cache);
+      } else {
+        this.vorpal.ui.write('');
+      }
     }
   },
 
   quit() {
-    this.vorpal.removeListener('keypress', this.keypressFn);
-    this.vorpal.ui.submit('');
-    this.vorpal.ui.rewrite('');
-    this.callback();
+    const self = this;
+    self.hasQuit = true;
+
+    function end() {
+      self.vorpal.removeListener('keypress', self.keypressFn);
+      self.vorpal.ui.submit('');
+      self.vorpal.ui.rewrite('');
+      self.callback();
+    }
+
+    // Wait for the prompt to render.
+    function wait() {
+      if (!self.vorpal.ui._activePrompt) {
+        setTimeout(wait, 10);
+      } else {
+        end();
+      }
+    }
+
+    wait();
   },
 
   prompt() {
+    this.prompted = true;
     const self = this;
-    const cb = function () {};
+
+    // For now, ensure we aren't stuck
+    // on Vorpal's last prompt.
+    if (self.vorpal.ui._activePrompt) {
+      delete self.vorpal.ui._activePrompt;
+    }
+
     this.instance.prompt({
       type: 'input',
       name: 'continue',
@@ -216,7 +261,7 @@ const less = {
         });
         return false;
       }
-    }, cb);
+    }, function () {});
   }
 };
 
@@ -228,6 +273,10 @@ const less = {
 module.exports = function (vorpal) {
   function route(args, cb) {
     cb = cb || function () {};
+    if (this._less && this._less.hasQuit === true) {
+      cb();
+      return;
+    }
     if (!this._less) {
       this._less = Object.create(less);
       this._less.init(this, vorpal, args, cb);
@@ -240,6 +289,7 @@ module.exports = function (vorpal) {
 
   vorpal
     .command('less', 'Less implementation.')
+    .option('-F, --quit-if-one-screen')
     .hidden()
     .help(route)
     .action(route);

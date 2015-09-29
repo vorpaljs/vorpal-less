@@ -65,5 +65,5 @@ Feel free to contribute! Additional work is needed on:
 
 ### License
 
-MIT © [David Caccavella](https://githbu.com/dthree)
+MIT © [David Caccavella](https://github.com/dthree)
 

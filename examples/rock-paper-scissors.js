@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const vorpal = require('vorpal')();
 const less = require('./../dist/less');
 
-function rps(lines) {
+function rps(lines, rows) {
   function gen() {
     const rand1 = ['rock', 'paper', 'scissors']['012'.charAt(Math.floor(Math.random() * 3))];
     const rand2 = ['blue', 'white', 'yellow', 'red', 'magenta', 'green', 'cyan']['0123456'.charAt(Math.floor(Math.random() * 7))];
@@ -13,7 +13,7 @@ function rps(lines) {
   let out = '';
   for (let i = 0; i < lines; ++i) {
     out += `${(i + 1)}: `;
-    for (let j = 0; j < Math.floor((Math.random() * 20) * (Math.random() * 100)); ++j) {
+    for (let j = 0; j < rows; ++j) {
       out += gen(j + 1);
     }
     out += (i === lines - 1) ? '' : '\n';
@@ -32,13 +32,13 @@ vorpal.command('single', 'Spits an epic set of single-page data to less.')
     return `${str} | less -F`;
   })
   .action(function (args, cb) {
-    this.log(rps(20));
+    this.log(rps(20, 5));
     cb();
   });
 
 vorpal.command('rock-paper-scissors', 'Spits an epic set of data to less.')
   .alias('b')
   .action(function (args, cb) {
-    this.log(rps(500));
+    this.log(rps(500, Math.floor((Math.random() * 20) * (Math.random() * 50))));
     cb();
   });

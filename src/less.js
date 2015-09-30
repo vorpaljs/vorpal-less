@@ -227,6 +227,7 @@ const less = {
     function end() {
       self.vorpal.removeListener('keypress', self.keypressFn);
       if (options.rewrite) {
+        self.vorpal.ui.rewrite('');
         self.vorpal.ui.submit('');
         self.vorpal.ui.rewrite('');
       }
@@ -282,6 +283,10 @@ module.exports = function (vorpal) {
   function route(args, cb) {
     cb = cb || function () {};
     if (this._less && this._less.hasQuit === true) {
+      args.stdin = (Object.prototype.toString.call(args.stdin) === '[object Array]') ? args.stdin[0] : args.stdin;
+      if (this._less.quitIfOneScreen && args.stdin && args.stdin !== '') {
+        vorpal.log(args.stdin);
+      }
       cb();
       return;
     }

@@ -32,13 +32,21 @@ vorpal.command('single', 'Spits an epic set of single-page data to less.')
     return `${str} | less -F`;
   })
   .action(function (args, cb) {
+    const self = this;
     this.log(rps(20, 5));
-    cb();
+    setTimeout(function () {
+      self.log(rps(10, 6));
+      cb();
+    }, 1000);
   });
 
 vorpal.command('rock-paper-scissors', 'Spits an epic set of data to less.')
   .alias('b')
   .action(function (args, cb) {
+    const self = this;
     this.log(rps(500, Math.floor((Math.random() * 20) * (Math.random() * 50))));
-    cb();
+    setTimeout(function () {
+      self.log(rps(10, 6));
+      cb();
+    }, 1000);
   });

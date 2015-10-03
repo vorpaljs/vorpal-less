@@ -91,8 +91,10 @@ const less = {
       str = slice(str, cursorX, cursorX + process.stdout.columns - 1);
       return str;
     }).join('\n');
-    // stdins = (stdins[stdins.length - 1] === '\n') ? stdins.slice(0, stdins.length - 1) : stdins;
     if (this.quitIfOneScreen && diff > 0) {
+      // If we're logging straight, we want to remove the last \n, 
+      // as console.log takes care of that for us.
+      stdins = (stdins[stdins.length - 1] === '\n') ? stdins.slice(0, stdins.length - 1) : stdins;
       self.vorpal.log(stdins);
       this.quit({
         redraw: false

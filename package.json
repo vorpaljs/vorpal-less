@@ -37,7 +37,6 @@
     "xo": "^0.9.0"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
     "slice-ansi": "0.0.3"
   },
   "engines": {

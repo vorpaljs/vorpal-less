@@ -4,10 +4,11 @@
  * Module dependencies.
  */
 
-const chalk = require('chalk');
 const util = require('util');
 const help = require('./help');
 const slice = require('slice-ansi');
+
+let chalk;
 
 const utili = {
 
@@ -90,11 +91,11 @@ const less = {
       str = slice(str, cursorX, cursorX + process.stdout.columns - 1);
       return str;
     }).join('\n');
-    stdins = (stdins[stdins.length - 1] === '\n') ? stdins.slice(0, stdins.length - 1) : stdins;
+    // stdins = (stdins[stdins.length - 1] === '\n') ? stdins.slice(0, stdins.length - 1) : stdins;
     if (this.quitIfOneScreen && diff > 0) {
       self.vorpal.log(stdins);
       this.quit({
-        rewrite: false
+        redraw: false
       });
       return undefined;
     }
@@ -102,7 +103,7 @@ const less = {
   },
 
   render(data) {
-    this.vorpal.ui.rewrite(data);
+    this.vorpal.ui.redraw(data);
   },
 
   onKeypress(keypress) {
@@ -122,7 +123,7 @@ const less = {
     let cursorY = this[cursorYName];
     let cursorX = this[cursorXName];
     const startedBelowBottom = (cursorY > bottom);
-    const ignore = ['backspace', 'left', 'right', '`'];
+    const ignore = ['backspace', 'left', 'right', '`', 'tab'];
     const flags = {
       match: true,
       stop: true,
@@ -210,9 +211,9 @@ const less = {
       this.vorpal.ui.delimiter(delimiter);
       this.render(content);
       if (cursorY < bottom && !this.helpMode) {
-        this.vorpal.ui.write(this.cache);
+        this.vorpal.ui.input(this.cache);
       } else {
-        this.vorpal.ui.write('');
+        this.vorpal.ui.input('');
       }
     }
   },
@@ -221,15 +222,15 @@ const less = {
     const self = this;
     self.hasQuit = true;
     options = options || {
-      rewrite: true
+      redraw: true
     };
 
     function end() {
       self.vorpal.removeListener('keypress', self.keypressFn);
-      if (options.rewrite) {
-        self.vorpal.ui.rewrite('');
+      if (options.redraw) {
         self.vorpal.ui.submit('');
-        self.vorpal.ui.rewrite('');
+        self.vorpal.ui.redraw.clear();
+        self.vorpal.ui.redraw.done();
       }
       self.callback();
     }
@@ -280,6 +281,8 @@ const less = {
  */
 
 module.exports = function (vorpal) {
+  chalk = vorpal.chalk;
+
   function route(args, cb) {
     cb = cb || function () {};
     if (this._less && this._less.hasQuit === true) {

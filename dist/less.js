@@ -5,7 +5,6 @@
  */
 
 var util = require('util');
-var help = require('./help');
 var slice = require('slice-ansi');
 
 var chalk = undefined;
@@ -51,7 +50,7 @@ var less = {
     this.cache = '';
     this.numbers = '';
     this.prompted = false;
-    this.help = help;
+    this.help = require('./help')(vorpal);
     this.onlyHelp = args.options.help;
     this.helpMode = args.options.help;
     this.quitIfOneScreen = args.options.quitifonescreen;

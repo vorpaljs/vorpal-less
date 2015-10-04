@@ -5,7 +5,6 @@
  */
 
 const util = require('util');
-const help = require('./help');
 const slice = require('slice-ansi');
 
 let chalk;
@@ -51,7 +50,7 @@ const less = {
     this.cache = '';
     this.numbers = '';
     this.prompted = false;
-    this.help = help;
+    this.help = require('./help')(vorpal);
     this.onlyHelp = (args.options.help);
     this.helpMode = (args.options.help);
     this.quitIfOneScreen = (args.options.quitifonescreen);
@@ -92,7 +91,7 @@ const less = {
       return str;
     }).join('\n');
     if (this.quitIfOneScreen && diff > 0) {
-      // If we're logging straight, we want to remove the last \n, 
+      // If we're logging straight, we want to remove the last \n,
       // as console.log takes care of that for us.
       stdins = (stdins[stdins.length - 1] === '\n') ? stdins.slice(0, stdins.length - 1) : stdins;
       self.vorpal.log(stdins);

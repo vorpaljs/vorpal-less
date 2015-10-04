@@ -1,13 +1,12 @@
-const chalk = require('chalk');
-
-const b = chalk.blue;
-const y = chalk.yellow;
-const r = chalk.red;
-const c = chalk.cyan;
-const g = chalk.grey;
-const bold = chalk.bold;
-
-const help =
+module.exports = function (vorpal) {
+  const chalk = vorpal.chalk;
+  const b = chalk.blue;
+  const y = chalk.yellow;
+  const r = chalk.red;
+  const c = chalk.cyan;
+  const g = chalk.grey;
+  const bold = chalk.bold;
+  const help =
 `
                      ${bold(`SUMMARY OF LESS COMMANDS`)}
 
@@ -111,5 +110,5 @@ const help =
 
 
 `;
-
-module.exports = help;
+  return help;
+};

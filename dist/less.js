@@ -263,6 +263,9 @@ var less = {
       name: 'continue',
       message: ':',
       validate: function validate() {
+        if (self.hasQuit === true) {
+          return true;
+        }
         // By validating false, and sending
         // a keypress event, we can bypass the
         // enter key's default inquirer actions

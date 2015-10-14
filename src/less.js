@@ -263,6 +263,9 @@ const less = {
       name: 'continue',
       message: ':',
       validate() {
+        if (self.hasQuit === true) {
+          return true;
+        }
         // By validating false, and sending
         // a keypress event, we can bypass the
         // enter key's default inquirer actions
@@ -272,7 +275,8 @@ const less = {
         });
         return false;
       }
-    }, function () {});
+    }, function () {
+    });
   }
 };
 

@@ -286,8 +286,12 @@ const less = {
  */
 
 module.exports = function (vorpal) {
+  if (vorpal === undefined) {
+    return less;
+  }
+  vorpal.api = vorpal.api || {};
+  vorpal.api.less = less;
   chalk = vorpal.chalk;
-
   function route(args, cb) {
     cb = cb || function () {};
     if (this._less && this._less.hasQuit === true) {

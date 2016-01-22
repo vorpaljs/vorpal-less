@@ -1,7 +1,7 @@
 # Vorpal - Less
 
 [![Build Status](https://travis-ci.org/vorpaljs/vorpal-less.svg)](https://travis-ci.org/vorpaljs/vorpal-less)
-[![XO: Linted](https://img.shields.io/badge/xo-linted-blue.svg)](https://github.com/sindresorhus/xo)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
 A 100% Javascript (ES2015) implementation of the [less](https://en.wikipedia.org/wiki/Less_%28Unix%29) command.
 

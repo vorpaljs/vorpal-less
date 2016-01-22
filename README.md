@@ -44,7 +44,7 @@ node~$ hacker-news | less
 
 ### Implementation
 
-`vorpal-less` aims to be a letter-perfect implementation of the `less` command you know (and love?). All features implmented so far will appear in its help menu:
+`vorpal-less` aims to be a letter-perfect implementation of the `less` command you know (and love?). All features implemented so far will appear in its help menu:
 
 ```bash
 vorpal~$ less --help

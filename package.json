@@ -1,6 +1,6 @@
 {
   "name": "vorpal-less",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Less implementation for Vorpal.js",
   "main": "./dist/less.js",
   "scripts": {

@@ -42,6 +42,7 @@ const less = {
     this.vorpal = vorpal;
     this.hasQuit = false;
     this.callback = callback;
+    this.iteration = 0;
     this.cursorY = 0;
     this.cursorX = 0;
     this.helpCursorY = 0;
@@ -63,16 +64,36 @@ const less = {
   },
 
   exec(args) {
+    const self = this;
     const stdin = args.stdin || '';
+    this.iteration += 1;
     this.stdin += `${stdin}\n`;
-    const content = this.prepare();
-    if (this.hasQuit) {
-      return;
+    function roll() {
+      const content = self.prepare();
+      if (self.hasQuit) {
+        return;
+      }
+      if (!self.prompted) {
+        self.prompt();
+      }
+      self.render(content);
     }
-    if (!this.prompted) {
-      this.prompt();
+    // If we are getting tons of calls to
+    // exec due to a continual feed of data,
+    // only render if no change for 50 millis.
+    // This is important as otherwise slow
+    // consoles will take forever on redrawing
+    // it a million times.
+    if (this.iteration > 1) {
+      const lastIter = this.iteration;
+      setTimeout(function () {
+        if (self.iteration === lastIter) {
+          roll();
+        }
+      }, 50);
+    } else {
+      roll();
     }
-    this.render(content);
   },
 
   prepare() {

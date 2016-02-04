@@ -12,11 +12,14 @@ function rps(lines, rows) {
   }
   let out = '';
   for (let i = 0; i < lines; ++i) {
+    rows = Math.floor((Math.random() * 20) * (Math.random() * 50));
+    out = '';
     out += `${(i + 1)}: `;
     for (let j = 0; j < rows; ++j) {
       out += gen(j + 1);
     }
     out += (i === lines - 1) ? '' : '\n';
+    this.log(out);
   }
   return out;
 }
@@ -43,10 +46,10 @@ vorpal.command('single', 'Spits an epic set of single-page data to less.')
 vorpal.command('rock-paper-scissors', 'Spits an epic set of data to less.')
   .alias('b')
   .action(function (args, cb) {
-    const self = this;
-    this.log(rps(500, Math.floor((Math.random() * 20) * (Math.random() * 50))));
+    rps.call(this, 1000, null);
+    // this.log(rps(500, Math.floor((Math.random() * 20) * (Math.random() * 50))));
     setTimeout(function () {
-      self.log(rps(10, 6));
+      // self.log(rps(10, 6));
       cb();
     }, 1000);
   });
